@@ -1,4 +1,12 @@
+const dns = require('dns');
 const mongoose = require('mongoose');
+
+// Use reliable DNS servers to resolve MongoDB Atlas SRV records without querySrv ETIMEOUT
+try {
+  dns.setServers(['8.8.8.8', '1.1.1.1']);
+} catch {
+  // fallback to system default
+}
 
 async function connectDB() {
   try {
