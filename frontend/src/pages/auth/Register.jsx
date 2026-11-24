@@ -24,7 +24,11 @@ export default function Register() {
       await register(form);
       navigate('/complete-profile', { replace: true });
     } catch (err) {
-      setError(err.message);
+      if (err.details && Array.isArray(err.details) && err.details.length > 0) {
+        setError(err.details.map((d) => d.msg).join('. '));
+      } else {
+        setError(err.message || 'Registration failed');
+      }
     } finally {
       setLoading(false);
     }
