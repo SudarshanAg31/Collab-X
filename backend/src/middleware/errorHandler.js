@@ -20,8 +20,12 @@ module.exports = (err, _req, res, _next) => {
     message = err.message;
   }
 
-  if (process.env.NODE_ENV !== 'production' && err.stack) {
-    console.error(err.stack);
+  if (process.env.NODE_ENV !== 'production') {
+    if (details) {
+      console.warn(`[api-error] ${status} ${code}: ${message}`, details);
+    } else if (err.stack) {
+      console.error(err.stack);
+    }
   }
 
   const payload = { success: false, error: { code, message } };
